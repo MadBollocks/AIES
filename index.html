@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wumpus World</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <img class="side-image wumpus-image" src="assets/wumpus.jpg" alt="" aria-hidden="true">
+    <img class="side-image hunter-image" src="assets/hunter.jpg" alt="" aria-hidden="true">
+    <main class="page-shell">
+        <header class="topbar">
+            <div>
+                <p class="kicker">Artificial Intelligence Project</p>
+                <h1>Wumpus World</h1>
+            </div>
+            <button id="new-forest" class="button primary">New Random Forest</button>
+        </header>
+
+        <section class="game-layout">
+            <aside class="control-panel" aria-label="Game controls and guide">
+                <div class="panel-block objective">
+                    <span class="section-label">Objective</span>
+                    <p>Find the gold, collect it, and return to the entrance at <strong>(1, 1)</strong>.</p>
+                </div>
+
+                <div class="panel-block">
+                    <span class="section-label">Game setup</span>
+                    <label for="grid-size">Forest size</label>
+                    <select id="grid-size">
+                        <option value="4">4 x 4</option>
+                        <option value="5">5 x 5</option>
+                        <option value="6">6 x 6</option>
+                    </select>
+                    <label for="ai-speed">AI speed</label>
+                    <select id="ai-speed">
+                        <option value="1000">Slow</option>
+                        <option value="700">Normal</option>
+                        <option value="450" selected>Brisk</option>
+                        <option value="250">Fast</option>
+                    </select>
+                </div>
+
+                <div class="panel-block legend">
+                    <span class="section-label">Icon meanings</span>
+                    <p><span>🧭</span> Player</p>
+                    <p><span>🪙</span> Gold</p>
+                    <p><span>👹</span> Wumpus</p>
+                    <p><span>🕳</span> Pit</p>
+                    <p><span>💨</span> Breeze nearby</p>
+                    <p><span>!</span> Stench nearby</p>
+                </div>
+
+                <div class="panel-block scoring">
+                    <span class="section-label">Points</span>
+                    <p>Move: -1</p>
+                    <p>Escape with gold: +1000</p>
+                    <p>Death: -1000</p>
+                </div>
+
+                <div class="panel-block controls">
+                    <span class="section-label">Controls</span>
+                    <p><kbd>Arrow keys</kbd> Move</p>
+                    <p><kbd>Space</kbd> Grab gold</p>
+                    <p><kbd>Escape</kbd> Leave at entrance</p>
+                    <button id="ai-toggle" class="button primary full">Start AI</button>
+                    <button id="god-mode" class="button full">God mode: Off</button>
+                    <button id="sound-toggle" class="button full">Sound: On</button>
+                </div>
+            </aside>
+
+            <section class="game-area" aria-label="Wumpus World board">
+                <div class="game-header">
+                    <div>
+                        <span class="section-label">Current expedition</span>
+                        <p id="status">Find the gold and bring it back to the entrance.</p>
+                    </div>
+                    <div class="stats" aria-label="Game statistics">
+                        <span>Score <strong id="score">0</strong></span>
+                        <span>Moves <strong id="moves">0</strong></span>
+                        <span>Gold <strong id="gold-status">No</strong></span>
+                    </div>
+                </div>
+                <div id="board" class="board" aria-label="Wumpus World grid"></div>
+                <div class="board-footer">
+                    <span id="ai-status">AI is ready</span>
+                    <span id="position">Position (1, 1)</span>
+                </div>
+            </section>
+
+            <aside class="comparison-panel" aria-label="Algorithm comparison">
+                <div class="comparison-heading">
+                    <span class="section-label">Live comparison</span>
+                    <h2>Search lab</h2>
+                    <p>Both strategies solve the same forest in sequence.</p>
+                </div>
+                <article class="algorithm-card astar-card">
+                    <div class="algorithm-title"><h3>A* Search</h3><span id="astar-status">Ready</span></div>
+                    <p class="algorithm-description">Uses movement cost plus Manhattan distance to focus the search.</p>
+                    <div class="algorithm-stats">
+                        <span>Nodes <strong id="astar-nodes">-</strong></span>
+                        <span>Route <strong id="astar-route">-</strong></span>
+                        <span>Moves <strong id="astar-moves">-</strong></span>
+                        <span>Score <strong id="astar-score">-</strong></span>
+                    </div>
+                    <p id="astar-summary" class="algorithm-summary">Shortest-path search is waiting.</p>
+                </article>
+                <article class="algorithm-card brute-card">
+                    <div class="algorithm-title"><h3>Brute Force</h3><span id="brute-status">Waiting</span></div>
+                    <p class="algorithm-description">Explores safe branches with backtracking until it reaches the gold.</p>
+                    <div class="algorithm-stats">
+                        <span>Nodes <strong id="brute-nodes">-</strong></span>
+                        <span>Route <strong id="brute-route">-</strong></span>
+                        <span>Moves <strong id="brute-moves">-</strong></span>
+                        <span>Score <strong id="brute-score">-</strong></span>
+                    </div>
+                    <p id="brute-summary" class="algorithm-summary">Starts after A* finishes on this map.</p>
+                </article>
+            </aside>
+        </section>
+    </main>
+
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+    <script src="ai_agent.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>
